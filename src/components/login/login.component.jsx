@@ -1,7 +1,7 @@
 import React from 'react';
 import './login.styles.scss';
 import FormInput from '../form-input/form-input.component';
-import { signInWithGoogle } from '../../firebase/firebase.utils';
+import { signInWithGoogle, auth } from '../../firebase/firebase.utils';
 
 export default class Login extends React.Component {
 
@@ -11,6 +11,17 @@ export default class Login extends React.Component {
             email: '',
             password: ''
         };
+    }
+
+    onSubmit = async (event) => {
+        event.preventDefault();
+
+        try {
+            await auth.signInWithEmailAndPassword(this.state.email, this.state.password);
+            this.setState({ email: '', password: '' });
+        } catch (error) {
+            console.log('Error signing in with email and password', error.message);
+        }
     }
 
     onChange = (event) => {
@@ -23,7 +34,7 @@ export default class Login extends React.Component {
                 <h2>I already have an account</h2>
                 <span>Sign in with your email and password</span>
 
-                <form>
+                <form onSubmit={this.onSubmit}>
                     <FormInput 
                         name="email" 
                         type="email" 
@@ -40,7 +51,7 @@ export default class Login extends React.Component {
                         required />
                     <div className="buttons">
                         <button type="submit">Sign In</button>
-                        <button className="googleSignIn" onClick={signInWithGoogle}>Sign in with Google</button>
+                        <button type="button" className="googleSignIn" onClick={signInWithGoogle}>Sign in with Google</button>
                     </div>                    
                 </form>
             </div>
