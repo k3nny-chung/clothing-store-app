@@ -23,6 +23,7 @@ button {
   font-weight: bolder;
   border: none;
   cursor: pointer;
+  align-items: center;
 }
 
 button:hover {
@@ -39,4 +40,16 @@ button:hover {
 .googleSignIn:hover {
   background-color: #357ae8;
   border: none;
+}
+
+button.inverted {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+}
+
+button.inverted:hover {
+    background-color: black;
+    color: white;
+    border: none;
 }
