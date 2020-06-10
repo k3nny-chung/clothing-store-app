@@ -60,10 +60,10 @@ const SHOP_DATA = {
         }
       ]
     },
-    sneakers: {
+    shoes: {
       id: 2,
-      title: 'Sneakers',
-      routeName: 'sneakers',
+      title: 'Shoes',
+      routeName: 'shoes',
       items: [
         {
           id: 10,
@@ -115,10 +115,10 @@ const SHOP_DATA = {
         }
       ]
     },
-    jackets: {
+    coats: {
       id: 3,
-      title: 'Jackets',
-      routeName: 'jackets',
+      title: 'Coats',
+      routeName: 'coats',
       items: [
         {
           id: 18,
