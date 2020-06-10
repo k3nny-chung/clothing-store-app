@@ -1,6 +1,6 @@
 import React from 'react';
 import './cart-icon.styles.scss';
-import basketIcon from '../../assets/icons8-basket-64.png';
+import basketIcon from '../../assets/basket.svg';
 import { connect } from 'react-redux';
 import { toggleCartDropdown } from '../../redux/cart/cart.actions';
 import { selectCartItemsCount } from '../../redux/cart/cart.selectors';

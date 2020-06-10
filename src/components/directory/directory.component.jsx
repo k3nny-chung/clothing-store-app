@@ -1,5 +1,5 @@
 import React from 'react';
-import { MenuItem } from '../menu-item/menu-item.component';
+import MenuItem from '../menu-item/menu-item.component';
 import './directory.styles.scss';
 
 export class Directory extends React.Component {
@@ -8,31 +8,36 @@ export class Directory extends React.Component {
         this.state = {
             sections: [
                 {
-                  title: 'hats and accessories',
+                  title: 'hats',
                   imageUrl: 'https://i.ibb.co/cvpntL1/hats.png',
-                  id: 1
+                  id: 1,
+                  linkUrl: 'shop/hats'
                 },
                 {
                   title: 'coats',
                   imageUrl: 'https://i.ibb.co/px2tCc3/jackets.png',
-                  id: 2
+                  id: 2,
+                  linkUrl: 'shop/coats'
                 },
                 {
                   title: 'shoes',
                   imageUrl: 'https://i.ibb.co/0jqHpnp/sneakers.png',
-                  id: 3
+                  id: 3,
+                  linkUrl: 'shop/shoes'
                 },
                 {
                   title: 'womens',
                   imageUrl: 'https://i.ibb.co/GCCdy8t/womens.png',
                   size: 'large',
-                  id: 4
+                  id: 4,
+                  linkUrl: 'shop/womens'
                 },
                 {
                   title: 'mens',
                   imageUrl: 'https://i.ibb.co/R70vBrQ/men.png',
                   size: 'large',
-                  id: 5
+                  id: 5,
+                  linkUrl: 'shop/mens'
                 }
               ]
         }
@@ -41,8 +46,8 @@ export class Directory extends React.Component {
     render() {
         return (
             <div className="directory-menu">
-                { this.state.sections.map(({ title, imageUrl, size, id }) => (
-                    <MenuItem key={id} title={title} imageUrl={imageUrl} size={size} />
+                { this.state.sections.map(({ id, ...otherProps }) => (
+                    <MenuItem key={id} {...otherProps} />
                 ))}
             </div>
         )

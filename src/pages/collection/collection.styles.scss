@@ -1,0 +1,16 @@
+.collection-page {
+    .title {
+        font-size: 36px;
+    }
+
+    .items {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-gap: 10px;
+
+        .collection-item {
+            width: auto;
+            margin-bottom: 20px;
+        }
+    }
+}
