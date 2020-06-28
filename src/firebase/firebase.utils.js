@@ -48,4 +48,35 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     return userRef;
 }
 
+
+// Adds the given items to the firestore collection
+export const addItems = async (collectionName, items) => {
+    const collectionRef = firestore.collection(collectionName);
+    const batch = firestore.batch();
+    items.forEach(item => {
+        const newDocRef = collectionRef.doc();
+        batch.set(newDocRef, item);
+    });
+
+    return await batch.commit();
+}
+
+export const fetchShopData = async () => {
+    const querySnapshot = await firestore.collection('storeCollections').get();
+    const transformedData = querySnapshot.docs.map( doc => {
+        const { title, items } = doc.data();
+        return {
+            id: doc.id,
+            title,
+            items,
+            routeName: encodeURI(title).toLowerCase()
+        };
+    });
+
+    return transformedData.reduce( (hashTable, current) => {
+        hashTable[current.title.toLowerCase()] = current;
+        return hashTable;
+    }, {});
+}
+
 export default firebase;
