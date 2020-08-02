@@ -4,12 +4,10 @@ import './collections-overview.styles.scss';
 import { connect } from 'react-redux';
 import { selectCollectionsForPreview } from '../../redux/shop/shop.selectors';
 
-const CollectionsOverviewPage = ({ collections, isShopDataLoading }) => (
+const CollectionsOverviewPage = ({ collections }) => (
 
     <div className="collections-overview">
-        { isShopDataLoading && <div>Loading...</div> }
         { 
-            !isShopDataLoading &&
             collections.map( ({ id, ...otherCollectionProps }) => (
                 <CollectionPreview key={id} {...otherCollectionProps} />
             ))

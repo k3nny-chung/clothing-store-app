@@ -61,22 +61,4 @@ export const addItems = async (collectionName, items) => {
     return await batch.commit();
 }
 
-export const fetchShopData = async () => {
-    const querySnapshot = await firestore.collection('storeCollections').get();
-    const transformedData = querySnapshot.docs.map( doc => {
-        const { title, items } = doc.data();
-        return {
-            id: doc.id,
-            title,
-            items,
-            routeName: encodeURI(title).toLowerCase()
-        };
-    });
-
-    return transformedData.reduce( (hashTable, current) => {
-        hashTable[current.title.toLowerCase()] = current;
-        return hashTable;
-    }, {});
-}
-
 export default firebase;

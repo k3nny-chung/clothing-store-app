@@ -4,34 +4,39 @@ import { Route } from 'react-router-dom';
 import CollectionsOverview from '../collections-overview/collections-overview.component';
 import CollectionPage from '../collection/collection.component';
 import { connect } from 'react-redux';
-import { updateShopData } from '../../redux/shop/shop.actions';
-import { fetchShopData } from '../../firebase/firebase.utils';
+import WithSpinner from '../../components/with-spinner/with-spinner.component';
+import { fetchShopDataAsync } from '../../redux/shop/shop.actions';
+
+
+const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview);
+const CollectionsPageWithSpinner = WithSpinner(CollectionPage);
+
 
 class ShopPage extends React.Component {
-    state = { loading: true }
-    
+       
     componentDidMount() {
-        const { updateShopData } = this.props;
-        fetchShopData().then( shopData => {
-            updateShopData(shopData);
-            this.setState({ loading: false });
-        });
-        
+        this.props.fetchShopDataAsync();
     }
 
     render() {
-        const { match } = this.props;
+        const { match, isShopDataLoading } = this.props;
         return (
             <div className="shop-page">
-                <Route exact path={match.path} isShopDataLoading={this.state.loading} component={CollectionsOverview} />
-                <Route path={`${match.path}/:category`} isShopDataLoading={this.state.loading} component={CollectionPage} />
+                <Route exact path={match.path} 
+                    render={ props => <CollectionsOverviewWithSpinner isLoading={isShopDataLoading} {...props} /> } />
+                <Route path={`${match.path}/:category`}
+                    render={ props => <CollectionsPageWithSpinner isLoading={isShopDataLoading} {...props} /> } />
             </div>
          );
     }
 }
 
-const mapDispatchToProps = dispatch => ({
-    updateShopData: shopData => dispatch(updateShopData(shopData))
+const mapStateToProps = (state) => ({
+    isShopDataLoading: state.shop.isFetching
 });
 
-export default connect(null, mapDispatchToProps)(ShopPage);
+const mapDispatchToProps = (dispatch) => ({
+    fetchShopDataAsync: () => dispatch(fetchShopDataAsync())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShopPage);

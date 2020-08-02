@@ -4,7 +4,12 @@ import { selectCollection } from '../../redux/shop/shop.selectors';
 import CollectionItem from '../../components/collection-item/collection-item.component';
 import { connect } from 'react-redux';
 
-const CollectionPage = ({ collection }) => (
+const CollectionPage = ({ collection }) => {
+
+    if (!collection) 
+        return (<div className="collection-page"></div>);
+
+    return (
     <div className="collection-page">
         <h2 className="title">{ collection.title }</h2>
         <div className="items">
@@ -14,10 +19,11 @@ const CollectionPage = ({ collection }) => (
             }
         </div>
     </div>
-);
+    );
+}
 
 const mapStateToProps = (state, props) => ({
     collection: selectCollection(props.match.params.category)(state)
-});
+})
 
 export default connect(mapStateToProps)(CollectionPage);
