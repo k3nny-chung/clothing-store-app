@@ -19,9 +19,10 @@ firebase.initializeApp(firebaseConfig);
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
-const provider = new firebase.auth.GoogleAuthProvider();
-provider.setCustomParameters({ prompt: 'select_account'});
-export const signInWithGoogle = () => auth.signInWithPopup(provider);
+export const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
+googleAuthProvider.setCustomParameters({ prompt: 'select_account'});
+
+export const signInWithGoogle = () => auth.signInWithPopup(googleAuthProvider);
 
 // Creates a new document in the users collection 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
@@ -48,6 +49,14 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     return userRef;
 }
 
+export const getCurrentUser = () => {
+    return new Promise( (resolve, reject) => {
+        const unsubsribe = auth.onAuthStateChanged(user => {
+            unsubsribe();
+            resolve(user);
+        }, reject);
+    });
+};
 
 // Adds the given items to the firestore collection
 export const addItems = async (collectionName, items) => {

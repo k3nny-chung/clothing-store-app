@@ -2,8 +2,10 @@ import React from 'react';
 import './sign-up.styles.scss';
 import { auth, createUserProfileDocument } from '../../firebase/firebase.utils';
 import FormInput from '../form-input/form-input.component';
+import { connect } from 'react-redux';
+import { registerStart } from '../../redux/user/user.actions';
 
-export default class SignUp extends React.Component {
+class SignUp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -14,7 +16,7 @@ export default class SignUp extends React.Component {
         };
     }
 
-    handleSubmit = async (event) => {
+    handleSubmit = (event) => {
         event.preventDefault();
         if (this.state.password !== this.state.confirmPassword) {
             alert("Passwords don't match");
@@ -23,8 +25,9 @@ export default class SignUp extends React.Component {
 
         try {
             const { email, password, displayName } = this.state;
-            const userCred = await auth.createUserWithEmailAndPassword(email, password);
-            await createUserProfileDocument(userCred.user, { displayName });
+            this.props.dispatch(registerStart({ email, password, displayName}));
+            // const userCred = await auth.createUserWithEmailAndPassword(email, password);
+            // await createUserProfileDocument(userCred.user, { displayName });
             this.setState({
                 email: '',
                 password: '',
@@ -80,3 +83,5 @@ export default class SignUp extends React.Component {
         )
     }
 }
+
+export default connect()(SignUp);

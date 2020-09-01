@@ -6,8 +6,9 @@ import logo from '../../assets/KC_Logo.001.png';
 import { connect } from 'react-redux';
 import CartIcon from '../cart-icon/cart-icon.component';
 import CartDropdown from '../cart-dropdown/cart-dropdown.component';
+import { signOutStart } from '../../redux/user/user.actions';
 
-const Header = ({ user, hideCartDropdown }) => (
+const Header = ({ user, hideCartDropdown, dispatch }) => (
     
     <div className="header">
         <Link className="logo-container" to="/">
@@ -17,7 +18,7 @@ const Header = ({ user, hideCartDropdown }) => (
             <Link className="option" to="/shop">SHOP</Link>
             <Link className="option" to="/contact">CONTACT</Link>
             { !user && <Link className="option" to="/login">SIGN IN</Link> }
-            { user && <div className="option" onClick={() => auth.signOut()} >SIGN OUT</div>}
+            { user && <div className="option" onClick={() => dispatch(signOutStart())} >SIGN OUT</div>}
             <CartIcon className="option"></CartIcon>
         </div>
         { !hideCartDropdown && <CartDropdown /> }
