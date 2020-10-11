@@ -2,9 +2,14 @@
     width: 380px;
     display: flex;
     flex-direction: column;
+
+    .buttons {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .create-account-link {
+        text-decoration: underline;
+    }
 }
 
-.buttons {
-    display: flex;
-    justify-content: space-between;
-}

@@ -15,10 +15,10 @@
 
         .header-block {
             text-transform: capitalize;
-            width: 23%;
+            width: 20%;
 
             &:last-child {
-                width: 8%;
+                width: 20%;
             }
         }
     }
@@ -26,12 +26,17 @@
     .total {
         margin-top: 30px;
         margin-left: auto;
-        font-size: 36px;
+        font-size: 30px;
     }
 
     button {
         height: auto;
         margin-left: auto;
         margin-top: 20px
+    }
+
+    .note {
+        color: rgb(127, 135, 139);
+        margin-top: 10px
     }
 }

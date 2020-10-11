@@ -1,6 +1,7 @@
 const INITIAL_STATE = {
     currentUser: null,
-    error: null
+    error: null,
+    orders: [],
 };  
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -24,9 +25,15 @@ const userReducer = (state = INITIAL_STATE, action) => {
             };
         case 'SIGN_IN_FAILURE':
         case 'SIGN_OUT_FAILURE':
+        case 'REGISTER_USER_FAILURE':
             return {
                 ...state,
                 error: action.payload
+            };
+        case 'FETCH_ORDERS_SUCCESS':
+            return {
+                ...state,
+                orders: action.payload
             };
         default:
             return state;

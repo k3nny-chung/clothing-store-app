@@ -6,7 +6,7 @@ import { toggleCartDropdown } from '../../redux/cart/cart.actions';
 import { selectCartItemsCount } from '../../redux/cart/cart.selectors';
 
 const CartIcon = ({ toggleCartDropdown, cartTotalItems }) => (
-    <div className="cart-icon" onClick={() => toggleCartDropdown()} >
+    <div className="cart-icon" onClick={() => toggleCartDropdown(cartTotalItems)} >
         <img src={basketIcon} alt="cart" className="shopping-icon"/>
         <span className="item-count">{ cartTotalItems > 0 && cartTotalItems }</span>
     </div>
@@ -17,7 +17,10 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    toggleCartDropdown: () => dispatch(toggleCartDropdown())
+    toggleCartDropdown: (cartTotalItems) => {
+        if (cartTotalItems > 0)
+            dispatch(toggleCartDropdown());
+    }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CartIcon);

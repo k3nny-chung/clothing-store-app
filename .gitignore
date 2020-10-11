@@ -19,6 +19,7 @@
 /client/.env.test.local
 /client/.env.production.local
 .env
+kc-clothing-store-firebase-adminsdk-smv26-9e267cf5ff.json
 
 /client/npm-debug.log*
 /client/yarn-debug.log*

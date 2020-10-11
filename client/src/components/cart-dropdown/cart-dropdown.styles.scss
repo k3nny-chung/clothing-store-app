@@ -1,14 +1,14 @@
 .cart-dropdown {
-    position: absolute;
+    position: fixed;
     width: 240px;
     height: 440px;
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    padding: 25px;
     border: 1px solid black;
     background-color: white;
-    top: 90px;
-    right: 40px;
+    top: 60px;
+    right: 10px;
     z-index: 5;
     
     .cart-items {
@@ -20,5 +20,26 @@
 
     .check-out-button {
         margin: 5px;
+    }
+
+    .close-button {
+        position: absolute;
+        border: none;
+        right: 5px;
+        top: 5px;
+        padding: 0 0;
+        width: 25px;
+        height: 20px;
+        opacity: 0.3;
+        color: black;
+        background-color: white;    
+
+        &::before {
+            content: 'x';
+        }
+
+        &:hover {
+            opacity: 1;
+        }
     }
 }

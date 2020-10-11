@@ -54,4 +54,18 @@ export const registerFailure = (error) => ({
     payload: error
 });
 
+export const fetchOrdersStart = (userId) => ({
+    type: 'FETCH_ORDERS_START',
+    payload: userId
+});
+
+export const fetchOrdersSuccess = (orders) => ({
+    type: 'FETCH_ORDERS_SUCCESS',
+    payload: orders
+});
+
+export const fetchOrdersFailure = (error) => ({
+    type: 'FETCH_ORDERS_FAILURE',
+    payload: error
+});
 

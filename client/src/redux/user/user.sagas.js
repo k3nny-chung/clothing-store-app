@@ -1,6 +1,6 @@
-import { auth, googleAuthProvider, createUserProfileDocument, getCurrentUser } from "../../firebase/firebase.utils";
+import { auth, googleAuthProvider, createUserProfileDocument, getCurrentUser, firestore } from "../../firebase/firebase.utils";
 import { call, put, takeLatest, all } from 'redux-saga/effects';
-import { signInSuccess, signInFailure, signOutSuccess, signOutFailure, registerSuccess, registerFailure } from "./user.actions";
+import { signInSuccess, signInFailure, signOutSuccess, signOutFailure, registerSuccess, registerFailure, fetchOrdersFailure, fetchOrdersSuccess } from "./user.actions";
 
 function* getSnapshotFromUserAuth(userAuth, additionalData) {
     try {
@@ -55,15 +55,49 @@ function* signOutSaga() {
     }
 }
 
-function* registerUserSaga({ payload: { email, password, displayName } }) {
+function* registerUserSaga({ payload: { email, password, displayName, gender } }) {
     try {
         const userCred = yield auth.createUserWithEmailAndPassword(email, password);
         yield put(registerSuccess({
             user: userCred.user,
-            additionalData: { displayName }
+            additionalData: { 
+                displayName, 
+                gender 
+            }
         }));
     } catch (error) {
+        // var errorMessage = 'Oops! something wrong. Please try again later.';
+        // switch (error.code) {
+        //     case 'auth/email-already-in-use':
+        //         errorMessage = 'The email address is already in use';
+        //         break;
+        //     case 'auth/invalid-email':
+        //         errorMessage = 'Invalid email address';
+        //         break;
+        //     case 'auth/weak-password':
+        //         errorMessage = 'The password is too weak.';
+        //         break;
+        // }
+
         yield put(registerFailure(error));
+    }
+}
+
+function* fetchOrdersSaga({ payload: userId }) {
+    try {
+        const querySnapshot = yield firestore.collection('orders')
+                                    .where('userID', '==', userId)
+                                    .orderBy('created', 'desc')
+                                    .get();
+        const orders = querySnapshot.docs.map(doc => ({ 
+            ...doc.data(), 
+            created: doc.data().created.toDate(),
+            id: doc.id 
+        }));
+        yield put(fetchOrdersSuccess(orders));
+
+    } catch (error) {
+        yield put(fetchOrdersFailure(error));
     }
 }
 
@@ -95,6 +129,10 @@ function* onRegisterSuccess() {
     yield takeLatest('REGISTER_USER_SUCCESS', signInAfterRegister);
 }
 
+function* onFetchOrders() {
+    yield takeLatest('FETCH_ORDERS_START', fetchOrdersSaga);
+}
+
 export function* userSagas() {
     yield all([
         call(onGoogleSignIn),
@@ -102,6 +140,7 @@ export function* userSagas() {
         call (onCheckUserSession),
         call(onSignOut),
         call(onRegister),
-        call(onRegisterSuccess)
+        call(onRegisterSuccess),
+        call(onFetchOrders)
     ]);
 }

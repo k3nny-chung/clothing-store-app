@@ -1,9 +1,16 @@
 .header {
+    position: fixed;
+    z-index: 901;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    background-color: white;
     height: 70px;
     width: 100%;
     display: flex;
     justify-content: space-between;
     margin-bottom: 25px;
+    border-bottom: 1px solid #eee;
 
     .logo-container {
         height: 100%;
@@ -19,6 +26,14 @@
         .option {
             padding: 10px 15px;
             cursor: pointer;
+        }
+
+        .account {
+            padding: 10px 10px;
+        }
+
+        .search {
+            padding: 10px 10px;
         }
     }
 }

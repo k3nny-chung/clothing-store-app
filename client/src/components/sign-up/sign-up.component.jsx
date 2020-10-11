@@ -4,6 +4,8 @@ import { auth, createUserProfileDocument } from '../../firebase/firebase.utils';
 import FormInput from '../form-input/form-input.component';
 import { connect } from 'react-redux';
 import { registerStart } from '../../redux/user/user.actions';
+import FormSelect from '../form-select/form-select.component';
+import { Link } from 'react-router-dom';
 
 class SignUp extends React.Component {
     constructor(props) {
@@ -12,7 +14,8 @@ class SignUp extends React.Component {
             displayName: '',
             email: '',
             password: '',
-            confirmPassword: ''
+            confirmPassword: '',
+            gender: ''
         };
     }
 
@@ -24,16 +27,11 @@ class SignUp extends React.Component {
         }
 
         try {
-            const { email, password, displayName } = this.state;
-            this.props.dispatch(registerStart({ email, password, displayName}));
+            const { email, password, displayName, gender } = this.state;
+            this.props.dispatch(registerStart({ email, password, displayName, gender }));
             // const userCred = await auth.createUserWithEmailAndPassword(email, password);
             // await createUserProfileDocument(userCred.user, { displayName });
-            this.setState({
-                email: '',
-                password: '',
-                displayName: '',
-                confirmPassword: ''
-            });
+            
         } catch (error) {
             console.log('Error signing up user', error.message);
         }
@@ -44,18 +42,33 @@ class SignUp extends React.Component {
     }
 
     render() {
+        const { registerError } = this.props;
         return (
             <div className="sign-up">
-                <h2 className="title">I do not have an account</h2>
-                <span>Sign up with your email and password</span>
+                <h2 className="title">CREATE AN ACCOUNT</h2>
+                <span>Sign up with your email address</span>
+                <span>Already registered? <Link className="login-link" to="/signin">Sign into your account</Link></span>
+
+                { registerError && <div className="error-message">{registerError.message}</div> }
+
                 <form className="sign-up-form" onSubmit={this.handleSubmit}>
                     <FormInput 
                         type="text"
                         name="displayName"
                         value={this.state.displayName}
-                        label="Display Name"
+                        label="Name"
                         onChange={this.handleChange}
                         required />
+                    <FormSelect 
+                        name="gender"
+                        value={this.state.gender}
+                        label="Gender"
+                        options={[
+                            { value: 'M', text: 'Male' },
+                            { value: 'F', text: 'Female' },
+                            { value: 'O', text: 'Other' }
+                        ]}
+                        onChange={this.handleChange} />
                     <FormInput 
                         type="email"
                         name="email"
@@ -77,11 +90,15 @@ class SignUp extends React.Component {
                         label="Confirm Password"
                         onChange={this.handleChange}
                         required />
-                    <button type="submit">Sign up</button>
+                    <button className="round" type="submit">Create Account</button>
                 </form>
             </div>
         )
     }
 }
 
-export default connect()(SignUp);
+const mapStateToProps = (state) => ({
+    registerError: state.user.error
+});
+
+export default connect(mapStateToProps, null)(SignUp);
