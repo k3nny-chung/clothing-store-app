@@ -2,11 +2,24 @@ import React from 'react';
 import './collection-item.styles.scss';
 import { connect } from 'react-redux';
 import { addItem, toggleCartDropdown } from '../../redux/cart/cart.actions';
+import {ReactComponent as HeartIcon} from '../../assets/favorite-24px.svg';
+import { saveFavorite, removeFavorite } from '../../redux/user/user.actions';
 
-const CollectionItem = ({ item, addItemToCart }) => {
+const CollectionItem = ({ item, addItemToCart, user, userFavorites, favorite, unfavorite }) => {
     const { name, price, imageUrl } = item;
+
+    let isFavorited = false;
+    if (userFavorites) {
+        isFavorited = userFavorites.includes(item.id);
+    }
+    
     return (
         <div className="collection-item">
+            <HeartIcon className={`heart-icon ${isFavorited ? 'favorited' : ''}`} onClick={() => { 
+                if (user) {
+                    isFavorited ? unfavorite(user.id, item.id) : favorite(user.id, item.id);
+                }
+             }}  />
             <div className="image"
                 style={{
                     backgroundImage: `url(${imageUrl})`
@@ -21,11 +34,18 @@ const CollectionItem = ({ item, addItemToCart }) => {
     )
 };
 
+const mapStateToProps = (state) => ({
+    user: state.user.currentUser,
+    userFavorites: state.user.favorites
+});
+
 const mapDispatchToProps = (dispatch) => ({
     addItemToCart: (item) => { 
         dispatch(addItem(item));
         dispatch(toggleCartDropdown());
-    }
+    },
+    favorite: (userId, itemId) => dispatch(saveFavorite({ userId, itemId })),
+    unfavorite: (userId, itemId) => dispatch(removeFavorite({ userId, itemId }))
 });
 
-export default connect(null, mapDispatchToProps)(CollectionItem);
+export default connect(mapStateToProps, mapDispatchToProps)(CollectionItem);

@@ -69,3 +69,28 @@ export const fetchOrdersFailure = (error) => ({
     payload: error
 });
 
+export const saveFavorite = (favoritedItem) => ({
+    type: 'SAVE_FAVORITE',
+    payload: favoritedItem
+});
+
+export const removeFavorite = (favoritedItem) => ({
+    type: 'REMOVE_FAVORITE',
+    payload: favoritedItem
+});
+
+export const fetchFavoritesStart = (userId) => ({
+    type: 'FETCH_FAVORITES_START',
+    payload: userId
+});
+
+export const fetchFavoritesSuccess = (favoriteItemIds) => ({
+    type: 'FETCH_FAVORITES_SUCCESS',
+    payload: favoriteItemIds
+});
+
+export const fetchFavoritesFailure = (error) => ({
+    type: 'FETCH_FAVORITES_FAILURE',
+    payload: error
+});
+

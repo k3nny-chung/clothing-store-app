@@ -5,26 +5,70 @@ import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { fetchOrdersStart } from '../../redux/user/user.actions';
 import Orders from '../../components/orders/orders.component';
+import { Switch, Route, useRouteMatch } from 'react-router-dom';
+import FavoriteList from '../../components/favorite-list/favorite-list.component';
+import WithSpinner from '../../components/with-spinner/with-spinner.component';
+import { fetchShopDataStart } from '../../redux/shop/shop.actions';
 
-const UserAccountPage = ({ dispatch, user, orders }) => {
+const OrdersWithSpinner = WithSpinner(Orders);
+const FavoriteListWithSpinner = WithSpinner(FavoriteList);
+
+const UserAccountPage = ({ 
+    fetchOrders, 
+    fetchShopData,
+    user, 
+    orders, 
+    shopCollections, 
+    userFavorites, 
+    isFetchingOrders,
+    isFetchingFavorites 
+}) => {
+    
     useEffect(() => {
         if (user) {
-            dispatch(fetchOrdersStart(user.id));   
-        }
-             
-    }, [user]);
+            fetchOrders(user.id);   
+        }     
+    }, [user, fetchOrders]);
 
+    useEffect(() => {
+        if (!shopCollections) {
+            fetchShopData();
+        }
+    }, [shopCollections, fetchShopData]);
+
+    const { path } = useRouteMatch();
     return (
     <div className="user-account-page">
         <UserProfile user={user} />
-        <Orders orders={orders} />
+        <Switch>
+            <Route exact path={path}>
+                <OrdersWithSpinner isLoading={isFetchingOrders} orders={orders} />
+            </Route>
+            <Route exact path={`${path}/orders`}>
+                <OrdersWithSpinner isLoading={isFetchingOrders} orders={orders} />
+            </Route>
+            <Route exact path={`${path}/favorites`}>
+                <FavoriteListWithSpinner isLoading={isFetchingFavorites} 
+                                        favoritedItemIds={userFavorites} 
+                                        collections={shopCollections} />
+            </Route>
+        </Switch>
     </div>
     )
 };
 
-const mapStateToProps = (state) => ({
-    user: state.user.currentUser,
-    orders: state.user.orders
+const mapDispatchToProps = (dispatch) => ({
+    fetchOrders: (userId) => dispatch(fetchOrdersStart(userId)),
+    fetchShopData: () => dispatch(fetchShopDataStart())
 });
 
-export default connect(mapStateToProps)(UserAccountPage);
+const mapStateToProps = (state) => ({
+    user: state.user.currentUser,
+    orders: state.user.orders,
+    shopCollections: state.shop.collections,
+    userFavorites: state.user.favorites,
+    isFetchingOrders: state.user.isFetchingOrders,
+    isFetchingFavorites: state.user.isFetchingFavorites
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserAccountPage);

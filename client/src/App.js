@@ -63,7 +63,7 @@ class App extends React.Component {
               <Route exact path="/checkout" component={CheckOutPage} />
               <Route exact path="/signin" render={() => this.props.user ? <Redirect to='/' /> :  <LoginPage />} />
               <Route exact path="/register" render={() => this.props.user ? <Redirect to='/' /> : <RegisterPage /> } /> 
-              <Route exact path="/account" render={() => this.props.user ? <UserAccountPage /> : <Redirect to='/' /> } />          
+              <Route path="/account" render={() => this.props.user ? <UserAccountPage /> : <Redirect to='/' /> } />          
               <Route exact path="/order-confirmation" component={OrderConfirmation} />
               <Route exact path="/search" component={SearchPage} />
              </Switch>

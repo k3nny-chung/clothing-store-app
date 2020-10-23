@@ -2,6 +2,9 @@ const INITIAL_STATE = {
     currentUser: null,
     error: null,
     orders: [],
+    favorites: [],
+    isFetchingOrders: false,
+    isFetchingFavorites: false
 };  
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -15,7 +18,9 @@ const userReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 currentUser: action.payload,
-                error: null
+                error: null,
+                orders: [],
+                favorites: []
             };
         case 'SIGN_OUT_SUCCESS':
             return {
@@ -30,10 +35,47 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 error: action.payload
             };
+        case 'FETCH_ORDERS_START':
+            return {
+                ...state,
+                isFetchingOrders: true
+            }
         case 'FETCH_ORDERS_SUCCESS':
             return {
                 ...state,
-                orders: action.payload
+                orders: action.payload,
+                isFetchingOrders: false
+            };
+        case 'FETCH_ORDERS_FAILURE':
+            return {
+                ...state,
+                isFetchingOrders: false
+            }
+        case 'FETCH_FAVORITES_START':
+            return {
+                ...state,
+                isFetchingFavorites: true
+            }
+        case 'FETCH_FAVORITES_SUCCESS':
+            return {
+                ...state,
+                favorites: [...action.payload],
+                isFetchingFavorites: false
+            };
+        case 'FETCH_FAVORITES_FAILURE':
+            return {
+                ...state,
+                isFetchingFavorites: false
+            }
+        case 'SAVE_FAVORITE':
+            return {
+                ...state,
+                favorites: [...state.favorites, action.payload.itemId]
+            };
+        case 'REMOVE_FAVORITE':
+            return {
+                ...state,
+                favorites: state.favorites.filter(f => f !== action.payload.itemId)
             };
         default:
             return state;

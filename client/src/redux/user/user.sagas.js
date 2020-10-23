@@ -1,6 +1,8 @@
 import { auth, googleAuthProvider, createUserProfileDocument, getCurrentUser, firestore } from "../../firebase/firebase.utils";
 import { call, put, takeLatest, all } from 'redux-saga/effects';
-import { signInSuccess, signInFailure, signOutSuccess, signOutFailure, registerSuccess, registerFailure, fetchOrdersFailure, fetchOrdersSuccess } from "./user.actions";
+import { signInSuccess, signInFailure, signOutSuccess, signOutFailure, registerSuccess, registerFailure, fetchOrdersFailure, fetchOrdersSuccess, fetchFavoritesSuccess, fetchFavoritesStart } from "./user.actions";
+import firebase from 'firebase/app';
+
 
 function* getSnapshotFromUserAuth(userAuth, additionalData) {
     try {
@@ -10,6 +12,9 @@ function* getSnapshotFromUserAuth(userAuth, additionalData) {
             id: userSnapshot.id,
             ...userSnapshot.data()
         }));
+
+        yield put(fetchFavoritesStart(userSnapshot.id));
+
     } catch (error) {
         yield put(signInFailure(error));
     }
@@ -101,6 +106,29 @@ function* fetchOrdersSaga({ payload: userId }) {
     }
 }
 
+function* saveFavoriteSaga({ payload: { userId, itemId } }) {
+    const docRef = firestore.collection('favorites').doc(userId);
+
+    yield docRef.set({
+        itemIds:  firebase.firestore.FieldValue.arrayUnion(itemId)
+    }, { merge: true });
+
+}
+
+function* removeFavoriteSaga({ payload: { userId, itemId } }) {
+    const docRef = firestore.collection('favorites').doc(userId);
+    
+    yield docRef.update({
+        itemIds: firebase.firestore.FieldValue.arrayRemove(itemId)
+    });
+}
+
+function* fetchFavoritesSaga({ payload: userId }) {
+    const doc = yield firestore.collection('favorites').doc(userId).get();
+    const { itemIds } = doc.data();
+    yield put(fetchFavoritesSuccess(itemIds));
+}
+
 function* signInAfterRegister({ payload: { user, additionalData } }) {
     yield getSnapshotFromUserAuth(user, additionalData);
 }
@@ -133,6 +161,18 @@ function* onFetchOrders() {
     yield takeLatest('FETCH_ORDERS_START', fetchOrdersSaga);
 }
 
+function* onSaveFavorite() {
+    yield takeLatest('SAVE_FAVORITE', saveFavoriteSaga);
+}
+
+function* onRemoveFavorite() {
+    yield takeLatest('REMOVE_FAVORITE', removeFavoriteSaga);
+}
+
+function* onFetchFavorites() {
+    yield takeLatest('FETCH_FAVORITES_START', fetchFavoritesSaga);
+}
+
 export function* userSagas() {
     yield all([
         call(onGoogleSignIn),
@@ -141,6 +181,9 @@ export function* userSagas() {
         call(onSignOut),
         call(onRegister),
         call(onRegisterSuccess),
-        call(onFetchOrders)
+        call(onFetchOrders),
+        call(onSaveFavorite),
+        call(onRemoveFavorite),
+        call(onFetchFavorites)
     ]);
 }
