@@ -18,6 +18,17 @@ class ShopPage extends React.Component {
         this.props.fetchShopData();
     }
 
+    componentWillUpdate() {
+        const { location } = this.props;
+        if (location.state) {
+            window.scroll({
+                top: location.state.y || 0, 
+                left: location.state.x || 0,
+                behavior: 'smooth'
+            });
+        }
+    }
+
     render() {
         const { match, isShopDataLoading } = this.props;
         return (

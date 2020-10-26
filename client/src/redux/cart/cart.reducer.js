@@ -50,6 +50,11 @@ const cartReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 cartDropdownHidden: !state.cartDropdownHidden
             }
+        case 'HIDE_CART':
+            return {
+                ...state,
+                cartDropdownHidden: true
+            }
         case 'ADD_CART_ITEM':
             return {
                 ...state,

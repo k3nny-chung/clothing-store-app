@@ -54,9 +54,9 @@ export const registerFailure = (error) => ({
     payload: error
 });
 
-export const fetchOrdersStart = (userId) => ({
+export const fetchOrdersStart = (emailAddress) => ({
     type: 'FETCH_ORDERS_START',
-    payload: userId
+    payload: emailAddress
 });
 
 export const fetchOrdersSuccess = (orders) => ({

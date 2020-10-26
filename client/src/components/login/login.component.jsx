@@ -3,7 +3,7 @@ import './login.styles.scss';
 import FormInput from '../form-input/form-input.component';
 import { connect } from 'react-redux';
 import { googleSignInStart, emailSignInStart } from '../../redux/user/user.actions';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useHistory, withRouter } from 'react-router-dom';
 
 class Login extends React.Component {
 
@@ -18,10 +18,12 @@ class Login extends React.Component {
     onSubmit = (event) => {
         event.preventDefault();
 
-        const { emailSignIn, loginError } = this.props;
-
+        const { emailSignIn, location, history } = this.props;
         try {
             emailSignIn(this.state.email, this.state.password); 
+           
+            const { from } = location.state || { from: '/' };
+            history.replace({ pathname: from, state: location.state || null });
                    
         } catch (error) {
             console.log('Error signing in with email and password', error.message);
@@ -84,4 +86,4 @@ const mapDispatchToProps = (dispatch) => ({
     emailSignIn: (email, password) => dispatch(emailSignInStart({ email, password }))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));

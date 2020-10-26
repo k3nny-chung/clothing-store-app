@@ -11,7 +11,7 @@ const Order = ({ order }) => {
         <div className="order-info">
             <div className="date">Date Placed: {orderDate.format('MMMM D YYYY, h:mm a')} </div>  
             <div className="order-id">Order ID: {id} </div>
-            <div className="total">Total Price: ${amount} ({numItems} items) </div>
+            <div className="total">Order Total: ${amount} ({`${numItems} ${numItems > 1 ? 'items': 'item'}`}) </div>
         </div>
         <div className="order-items">
             { 

@@ -2,6 +2,10 @@ export const toggleCartDropdown = () => ({
     type: 'TOGGLE_CART_DROPDOWN'
 });
 
+export const hideCart = () => ({
+    type: 'HIDE_CART'
+});
+
 export const addItem = (item) => ({
     type: 'ADD_CART_ITEM',
     payload: item

@@ -40,6 +40,7 @@ const StripeCheckoutButton = ({ price, items, user, history, dispatch, setIsTxnP
         <StripeCheckout 
             label="Pay Now"
             name="KC Clothing Store"
+            email={user? user.email : ''}
             billingAddress
             shippingAddress
             image={logo}

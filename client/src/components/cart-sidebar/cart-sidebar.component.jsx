@@ -4,14 +4,30 @@ import { connect } from 'react-redux';
 import CartItem from '../cart-item/cart-item.component';
 import { selectCartItems } from '../../redux/cart/cart.selectors';
 import { withRouter } from 'react-router-dom';
-import { toggleCartDropdown } from '../../redux/cart/cart.actions';
+import { toggleCartDropdown, hideCart } from '../../redux/cart/cart.actions';
+import { useRef, useEffect } from 'react';
 
-const CartSideBar = ({ cartItems, history, toggleCartDropdown, hideCartDropdown }) => (
+const CartSideBar = ({ cartItems, history, isCartHidden, hideCart }) => {
+
+    const node = useRef();
+
+    const handleClick = (event) => {
+        // On click outside of the cart, close the cart
+        if (!node.current.contains(event.target)) {
+            hideCart();
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClick);
+        return () => { document.removeEventListener('mousedown', handleClick) };
+    }, []);
     
-        <div className={`cart-sidebar ${hideCartDropdown ? 'hide' : 'show'}`} >
+    return (    
+        <div ref={node} className={`cart-sidebar ${isCartHidden ? 'hide' : 'show'}`} >
             <div className="cart-header">
                 <h2 className="title">Your Cart</h2>
-                <button type="button" className="close-button" onClick={() => toggleCartDropdown()} >
+                <button type="button" className="close-button" onClick={() => hideCart()} >
                     &#10005;
                 </button>
             </div>
@@ -26,22 +42,23 @@ const CartSideBar = ({ cartItems, history, toggleCartDropdown, hideCartDropdown 
                         className="check-out-button round"
                         onClick={() => {
                             history.push('/checkout');
-                            toggleCartDropdown();
+                            hideCart();
                         }} >
                         Go to checkout
                     </button>
                 </div>
             }
         </div>
-);
+    );
+};
 
 const mapStateToProps = (state) => ({
     cartItems: selectCartItems(state),
-    hideCartDropdown: state.cart.cartDropdownHidden
+    isCartHidden: state.cart.cartDropdownHidden
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    toggleCartDropdown: () => dispatch(toggleCartDropdown())
+    hideCart: () => dispatch(hideCart())
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CartSideBar));

@@ -88,10 +88,10 @@ function* registerUserSaga({ payload: { email, password, displayName, gender } }
     }
 }
 
-function* fetchOrdersSaga({ payload: userId }) {
+function* fetchOrdersSaga({ payload: emailAddress }) {
     try {
         const querySnapshot = yield firestore.collection('orders')
-                                    .where('userID', '==', userId)
+                                    .where('email', '==', emailAddress)
                                     .orderBy('created', 'desc')
                                     .get();
         const orders = querySnapshot.docs.map(doc => ({ 

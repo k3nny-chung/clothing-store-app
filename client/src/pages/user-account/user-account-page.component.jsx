@@ -26,7 +26,7 @@ const UserAccountPage = ({
     
     useEffect(() => {
         if (user) {
-            fetchOrders(user.id);   
+            fetchOrders(user.email);   
         }     
     }, [user, fetchOrders]);
 
@@ -58,7 +58,7 @@ const UserAccountPage = ({
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchOrders: (userId) => dispatch(fetchOrdersStart(userId)),
+    fetchOrders: (email) => dispatch(fetchOrdersStart(email)),
     fetchShopData: () => dispatch(fetchShopDataStart())
 });
 
