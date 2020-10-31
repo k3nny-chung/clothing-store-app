@@ -15,16 +15,29 @@ class Login extends React.Component {
         };
     }
 
+    componentDidMount() {
+        const { isLoginSuccess, history } = this.props;
+        if (isLoginSuccess){
+            history.push('/');
+        }
+    }
+
+    componentDidUpdate() {
+        const { location, history, isLoginSuccess } = this.props;
+        
+        if (isLoginSuccess) {
+            const { from } = location.state || { from: '/' };
+            history.push({ pathname: from, state: location.state || null });
+        }
+    }
+
     onSubmit = (event) => {
         event.preventDefault();
 
-        const { emailSignIn, location, history } = this.props;
+        const { emailSignIn } = this.props;
         try {
             emailSignIn(this.state.email, this.state.password); 
-           
-            const { from } = location.state || { from: '/' };
-            history.replace({ pathname: from, state: location.state || null });
-                   
+                      
         } catch (error) {
             console.log('Error signing in with email and password', error.message);
         }
@@ -35,7 +48,7 @@ class Login extends React.Component {
     }
 
     render() {
-        const { googleSignIn, loginError } = this.props;
+        const { googleSignIn, loginError, isLoginSuccess } = this.props;
         
         return (
             <div className="sign-in">
@@ -78,7 +91,8 @@ class Login extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-    loginError: state.user.error
+    loginError: state.user.error,
+    isLoginSuccess: !!state.user.currentUser
 });
 
 const mapDispatchToProps = (dispatch) => ({

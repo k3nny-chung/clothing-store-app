@@ -3,7 +3,7 @@ import './user-account-page.styles.scss';
 import UserProfile from '../../components/user-profile/user-profile.component';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { fetchOrdersStart } from '../../redux/user/user.actions';
+import { fetchFavoritesStart, fetchOrdersStart } from '../../redux/user/user.actions';
 import Orders from '../../components/orders/orders.component';
 import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import FavoriteList from '../../components/favorite-list/favorite-list.component';
@@ -16,6 +16,7 @@ const FavoriteListWithSpinner = WithSpinner(FavoriteList);
 const UserAccountPage = ({ 
     fetchOrders, 
     fetchShopData,
+    fetchFavorites,
     user, 
     orders, 
     shopCollections, 
@@ -35,6 +36,10 @@ const UserAccountPage = ({
             fetchShopData();
         }
     }, [shopCollections, fetchShopData]);
+
+    useEffect(() => { 
+        fetchFavorites(user.id);
+    }, [fetchFavorites, user, shopCollections]);
 
     const { path } = useRouteMatch();
     return (
@@ -59,7 +64,8 @@ const UserAccountPage = ({
 
 const mapDispatchToProps = (dispatch) => ({
     fetchOrders: (email) => dispatch(fetchOrdersStart(email)),
-    fetchShopData: () => dispatch(fetchShopDataStart())
+    fetchShopData: () => dispatch(fetchShopDataStart()),
+    fetchFavorites: (userId) => dispatch(fetchFavoritesStart(userId))
 });
 
 const mapStateToProps = (state) => ({

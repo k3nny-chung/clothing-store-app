@@ -125,7 +125,11 @@ function* removeFavoriteSaga({ payload: { userId, itemId } }) {
 
 function* fetchFavoritesSaga({ payload: userId }) {
     const doc = yield firestore.collection('favorites').doc(userId).get();
-    const { itemIds } = doc.data();
+    let itemIds = [];
+    if (doc.exists) {
+        itemIds = doc.data().itemIds;
+    }
+    
     yield put(fetchFavoritesSuccess(itemIds));
 }
 

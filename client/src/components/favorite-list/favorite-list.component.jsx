@@ -32,4 +32,7 @@ const FavoriteList = ({ favoritedItemIds, collections }) => {
     );
 };
 
+
+
+
 export default FavoriteList;
