@@ -1,3 +1,9 @@
+@import '../../assets/styles/settings';
+
 .order-confirmation {
     margin-top: 60px;
+
+    @media screen and (max-width: $mobile-width) {
+        padding: 10px 10px;
+    }
 }
