@@ -7,6 +7,10 @@ body {
   padding: 20px 60px;
 }
 
+@media screen and (max-width: 800px) {
+  body { padding: 10px; }
+}
+
 a {
   text-decoration: none;
   color: #5a5858;
@@ -18,6 +22,10 @@ a:hover {
   font-weight: 500;
 }
 
+h1 {
+  font-size: 28px;
+  text-transform: uppercase;
+}
 
 button {
   width: auto;
@@ -95,12 +103,12 @@ button.inverted:hover {
 }
 
 .main-content {
-  margin-top: 60px;
+  margin-top: 65px;
 }
 
 .main-page {
   transition: margin-right 1.5s;
-  transition: opacity 1.5s; 
+  transition: opacity 1.5s;  
 }
 
 .main-page.showCart {
@@ -128,3 +136,4 @@ button.inverted:hover {
 .noscroll {
   overflow: hidden;
 }
+

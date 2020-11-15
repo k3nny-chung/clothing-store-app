@@ -56,4 +56,10 @@
         margin-top: 20px;
         width: 100%;
     }
+
+    @media screen and (max-width: 800px) {
+        &.show {
+            width: 100%;
+        }
+    }
 }

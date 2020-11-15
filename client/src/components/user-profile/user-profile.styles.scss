@@ -20,4 +20,11 @@
             display: block;
         }
     }
+
+    @media screen and (max-width: 800px) {
+        margin: 20px 10px;
+        padding: 20px 10px;
+        height: unset;
+        width: auto;
+    }
 }

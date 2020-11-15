@@ -12,8 +12,8 @@ const CheckOutPageContent = ({ cartItems, cartTotal, user, setIsTxnProcessing })
             <div className="header-block">Product</div>
             <div className="header-block">Description</div>
             <div className="header-block">Quantity</div>
-            <div className="header-block">Price</div>
-            <div className="header-block">Remove</div>
+            <div className="header-block price">Price</div>
+            <div className="header-block remove">Remove</div>
         </div>
         { cartItems.map(item => <CheckoutItem key={item.id} cartItem={item} />) }
         <div className="total">TOTAL: ${cartTotal}</div>

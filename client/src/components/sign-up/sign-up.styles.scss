@@ -11,4 +11,8 @@
     .login-link {
         text-decoration: underline;
     }
+
+    @media screen and (max-width: 800px) {
+        width: 75vw;
+    }
 }

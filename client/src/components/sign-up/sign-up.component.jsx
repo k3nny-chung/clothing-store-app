@@ -45,7 +45,7 @@ class SignUp extends React.Component {
         const { registerError } = this.props;
         return (
             <div className="sign-up">
-                <h2 className="title">CREATE AN ACCOUNT</h2>
+                <h1 className="title">CREATE AN ACCOUNT</h1>
                 <span>Sign up with your email address</span>
                 <span>Already registered? <Link className="login-link" to="/signin">Sign into your account</Link></span>
 

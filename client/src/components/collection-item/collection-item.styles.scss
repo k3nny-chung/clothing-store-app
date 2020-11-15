@@ -61,12 +61,45 @@
       font-size: 18px;
   
       .name {
-        width: 90%;
+        // width: 90%;
         margin-bottom: 15px;
       }
   
-      .price {
-        width: 10%;
+      // .price {
+      //   width: 10%;
+      // }
+    }
+
+    @media screen and (max-width: 800px) {
+      width: 40vw;
+
+      .heart-icon {
+        opacity: 1;
+        z-index: 1;
+        display: block;
+        cursor: pointer;
+      }
+
+      .add-to-cart {
+        opacity: 0.8;
+        display: block;
+        width: 100%;
+      }
+
+      &:hover {
+        .image {
+            opacity: unset;
+        }
+
+        .add-to-cart {
+            opacity: unset;
+        }
+      }
+
+      .collection-footer { 
+        margin-bottom: 15px; 
+        line-height: 1;
       }
     }
+
   }

@@ -16,7 +16,7 @@ const FavoriteList = ({ favoritedItemIds, collections }) => {
 
     return (
         <div className="favorite-list">
-            <h2>FAVORITES</h2>
+            <h1>FAVORITES</h1>
             { favorites.length === 0 && <p>You haven't added anything to your favorites yet.</p> }
 
             <TransitionGroup className="favorite-grid">
