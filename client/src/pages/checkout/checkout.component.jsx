@@ -5,6 +5,7 @@ import { selectCartItems, selectCartTotal } from '../../redux/cart/cart.selector
 import CheckoutItem from '../../components/checkout-item/checkout-item.component';
 import StripeCheckoutButton from '../../components/stripe-button/stripe-button.component';
 import WithSpinner from '../../components/with-spinner/with-spinner.component';
+import { useEffect } from 'react';
 
 const CheckOutPageContent = ({ cartItems, cartTotal, user, setIsTxnProcessing }) => (
     <div className="checkout-page">
@@ -26,12 +27,25 @@ const CheckOutPageWithSpinner = WithSpinner(CheckOutPageContent);
 
 const CheckOutPage = ({ cartItems, cartTotal, user }) => {
     const [isTxnProcessing, setIsTxnProcessing] = useState(false);
+    
+    // To prevent updating state when component is already unmounted 
+    let isMounted = false;
+    useEffect( () => {
+        isMounted = true;
+        return () => {  isMounted = false; }
+    });
+
+    const resetIsTxnProcessing = (val) => {
+        if (isMounted) {
+            setIsTxnProcessing(val);
+        }
+    }
 
     return <CheckOutPageWithSpinner 
                 cartItems={cartItems} 
                 cartTotal={cartTotal} 
                 user={user} 
-                setIsTxnProcessing={setIsTxnProcessing} 
+                setIsTxnProcessing={resetIsTxnProcessing} 
                 isLoading={isTxnProcessing} />
 }
 
